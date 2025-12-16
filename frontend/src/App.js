@@ -10,10 +10,16 @@ const uppy = new Uppy({
   autoProceed: false,
   restrictions: {
     maxNumberOfFiles: 20,
+  },
+
+  onBeforeUpload(files) {
+    Object.values(files).forEach((file) => {
+      file.meta.filename = file.name;
+      file.meta.type = file.type;
+    });
   }
 }).use(Tus, {
   endpoint: "http://localhost:4000/files",
-  resume: true,
   retryDelays: [0, 1000, 3000, 5000],
 });
 
